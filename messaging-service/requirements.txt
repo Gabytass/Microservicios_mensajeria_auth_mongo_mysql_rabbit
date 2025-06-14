@@ -1,0 +1,6 @@
+Flask
+Flask-SocketIO
+pymongo
+pika
+requests
+python-socketio
