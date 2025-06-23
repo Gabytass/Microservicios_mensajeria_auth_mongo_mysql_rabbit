@@ -1,4 +1,4 @@
-from fask import Flask, request, jsonify
+from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit
 import pymongo
 import pika
@@ -18,6 +18,7 @@ messages_collection = db.messages
 # RabbitMQ connection
 def get_rabbitmq_connection():
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ.get('RABBITMQ_HOST', 'rabbitmq-service')))
+    credentials = pika.PlainCredentials('admin', 'admin')
     return connection
 
 def validate_token(token):
@@ -116,4 +117,4 @@ if __name__ == '__main__':
     consumer_thread = threading.Thread(target=consume_messages)
     consumer_thread.daemon = True
     consumer_thread.start()
-    socketio.run(app, host='0.0.0.0', port=5001, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5001, debug=True,allow_unsafe_werkzeug=True)

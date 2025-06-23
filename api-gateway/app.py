@@ -23,8 +23,8 @@ def auth_proxy(path):
     except requests.RequestException as e:
         return jsonify({"error": str(e)}), 500
     
-@app.route('/api/mesages', methods=['POST', 'GET'])
-@app.route('/api/mesages/<path:path>', methods=['POST', 'GET', 'PUT', 'DELETE'])
+@app.route('/api/messages', methods=['POST', 'GET'])
+@app.route('/api/messages/<path:path>', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def messaging_proxy(path=''):
     try:
         url = f"{MESSAGING_SERVICE_URL}/messages/"

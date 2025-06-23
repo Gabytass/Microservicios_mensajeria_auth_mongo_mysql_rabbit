@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: messaging-service
+  namespace: microservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: messaging-service
+  template:
+    metadata:
+      labels:
+        app: messaging-service
+    spec:
+      containers:
+      - name: messaging-service
+        image: gabyssr/messaging-service:latest
+        ports:
+        - containerPort: 5001
+        env:
+        - name: AUTH_SERVICE_HOST
+          value: "auth-service"
+        - name: MONGO_URI
+          value: "mongodb://mongodb-service:27017/"
+        - name: RABBITMQ_HOST
+          value: "rabbitmq-service"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: messaging-service
+  namespace: microservices
+spec:
+  selector:
+    app: messaging-service
+  ports:
+  - protocol: TCP
+    port: 5001
+    targetPort: 5001
